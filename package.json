@@ -1,0 +1,25 @@
+{
+  "name": "generate",
+  "version": "0.0.1",
+  "description": "generate your repositories",
+  "main": "index.js",
+  "scripts": {
+    "test": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xiedacon/generate.git"
+  },
+  "keywords": [
+    "generate",
+    "scaffold",
+    "Node.js",
+    "git"
+  ],
+  "author": "xiedacon",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/xiedacon/generate/issues"
+  },
+  "homepage": "https://github.com/xiedacon/generate#readme"
+}

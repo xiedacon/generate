@@ -1,0 +1,25 @@
+{
+  "name": "{{repository}}",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run test-style && echo 'run test'",
+    "test-style": "./node_modules/standard/bin/cmd.js | ./node_modules/snazzy/bin/cmd.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/{{user}}/{{repository}}.git"
+  },
+  "keywords": [],
+  "author": "{{user}}",
+  "license": "{{license}}",
+  "bugs": {
+    "url": "https://github.com/{{user}}/{{repository}}/issues"
+  },
+  "homepage": "https://github.com/{{user}}/{{repository}}#README.md",
+  "devDependencies": {
+    "snazzy": "^7.0.0",
+    "standard": "^10.0.3"
+  }
+}
