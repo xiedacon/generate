@@ -4,7 +4,7 @@
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 [![MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/xiedacon/generate/blob/master/LICENSE)
 
-A tool to generate your repositories with template
+A tool to generate your repositories with template.
 
 ## Usage
 
