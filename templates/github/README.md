@@ -4,10 +4,12 @@
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 [![{{license}}](https://img.shields.io/badge/license-{{license}}-blue.svg)](https://github.com/{{user}}/{{repository}}/blob/master/LICENSE)
 
-### Requirements
+## Requirements
 
-### Usage
+## Usage
 
-### License
+## License
 
-[{{license}}](https://github.com/{{user}}/{{repository}}/blob/master/LICENSE)
+[{{license}} License](https://github.com/{{user}}/{{repository}}/blob/master/LICENSE)
+
+Copyright (c) {{year}} {{user}}

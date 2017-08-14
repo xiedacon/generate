@@ -1,6 +1,7 @@
 {
-  "repository": "test",
-  "user": "xiedacon",
+  "user": "nobody",
+  "repository": "norepository",
+  "template": "github",
   "license": "MIT",
   "git": true
 }

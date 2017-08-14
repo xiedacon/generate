@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "npm run test-style && echo 'run test'",
+    "test": "npm run test-style && echo 'test finish'",
     "test-style": "./node_modules/standard/bin/cmd.js | ./node_modules/snazzy/bin/cmd.js"
   },
   "repository": {
