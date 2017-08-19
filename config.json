@@ -2,6 +2,5 @@
   "user": "nobody",
   "repository": "norepository",
   "template": "github",
-  "license": "MIT",
-  "git": true
+  "license": "MIT"
 }
