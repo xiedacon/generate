@@ -53,16 +53,19 @@ By default, we use:
   "user": "nobody",
   "repository": "norepository",
   "template": "github",
-  "license": "MIT",
-  "git": true
+  "license": "MIT"
 }
 ```
 
 You can specify a config with ``generate -c path``.
 
-When ``git`` is true, it will push init commit to origin repository.
-
 All the fields in config, are took as global variables to the template engine.
+
+## Plugins
+
+After generate repository by template, we use plugins to do next.
+
+Plugin must be a function and sync execute.
 
 ## Make your own
 
