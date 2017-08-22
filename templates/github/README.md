@@ -8,6 +8,8 @@
 
 ## Usage
 
+## API
+
 ## License
 
 [{{license}} License](https://github.com/{{user}}/{{repository}}/blob/master/LICENSE)
