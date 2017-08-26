@@ -16,33 +16,24 @@ cd test
 generate -u yourname -r repositoryname
 ```
 
-## Options
+## API
 
-```generate [options]```
+```
+  Usage: generate [options]
+  
+  Options:
+  
+    -c, --config [value]    Config to generate project (defaults to "/path/to/generate/config.json")
+    -e, --encoding [value]  Encoding to generate project (defaults to "utf8")
+    -h, --help              Output usage information
+    -l, --license [value]   License to generate project: APACHE, GUN, MIT (defaults to "MIT")
+    -p, --project [value]   Project name (defaults to "noproject")
+    -r, --root              Root dir to generate project
+    -t, --template [value]  Template to generate project: github (defaults to "github")
+    -u, --user [value]      User name (defaults to "nobody")
+    -v, --version           Output the version number
 
-### -u, --user
-
-> User name ( default nobody )
-
-### -r, --repository
-
-> Repository name ( default norepository )
-
-### -t, --template
-
-> Choose a template to generate repository, in templates directory ( default github )
-
-### -l, --license
-
-> License to repository ( default MIT )
-
-### -c, --config
-
-> Specify a config
-
-### -h, --help
-
-> Output usage information
+```
 
 ## Specify a config
 
@@ -51,13 +42,20 @@ By default, we use:
 ```js
 {
   "user": "nobody",
-  "repository": "norepository",
+  "project": "noproject",
   "template": "github",
-  "license": "MIT"
+  "license": "MIT",
+  "plugins": [
+    "license",
+    "npm",
+    "git"
+  ],
+  "encoding": "utf8",
+  "engine": "art-template"
 }
 ```
 
-You can specify a config with ``generate -c path``.
+You can specify a config with ``generate -c path``. It will merge with default.
 
 All the fields in config, are took as global variables to the template engine.
 
@@ -65,7 +63,7 @@ All the fields in config, are took as global variables to the template engine.
 
 After generate repository by template, we use plugins to do next.
 
-Plugin must be a function and sync execute.
+Plugins must be a sync function.
 
 ## Make your own
 
