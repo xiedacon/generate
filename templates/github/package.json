@@ -1,5 +1,5 @@
 {
-  "name": "{{repository}}",
+  "name": "{{project}}",
   "version": "0.0.1",
   "description": "",
   "main": "index.js",
@@ -9,15 +9,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/{{user}}/{{repository}}.git"
+    "url": "git+https://github.com/{{user}}/{{project}}.git"
   },
   "keywords": [],
   "author": "{{user}}",
   "license": "{{license}}",
   "bugs": {
-    "url": "https://github.com/{{user}}/{{repository}}/issues"
+    "url": "https://github.com/{{user}}/{{project}}/issues"
   },
-  "homepage": "https://github.com/{{user}}/{{repository}}#README.md",
+  "homepage": "https://github.com/{{user}}/{{project}}#README.md",
   "devDependencies": {
     "snazzy": "^7.0.0",
     "standard": "^10.0.3"

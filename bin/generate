@@ -6,29 +6,28 @@ const args = require('args')
 const { resolve } = require('path')
 const fs = require('fs')
 
-const encoding = 'utf8'
 const configPath = resolve(__dirname, '../config.json')
-const config = JSON.parse(fs.readFileSync(configPath, { encoding }))
+const config = require(configPath)
+const { encoding } = config
 const licenses = fs.readdirSync(resolve(__dirname, '../license'))
-const templatePath = resolve(__dirname, '../templates')
-const templates = fs.readdirSync(templatePath)
+const templates = fs.readdirSync(resolve(__dirname, '../templates'))
+const pluginsPath = resolve(__dirname, '../plugins')
+const { render } = require(config.engine)
 
 args
   .option('user', 'User name', config.user)
-  .option('repository', 'Repository name', config.repository)
-  .option('template', `Template to generate repository: ${templates.join(', ')}`, 'github')
-  .option('license', `License to repository: ${licenses.join(', ')}`, config.license, license => license.toUpperCase())
-  .option('year', 'Year to license. In most case, need\'t set', new Date().getFullYear())
-  .option('config', 'Config to generate repository', `${configPath}`, (_configPath) => {
-    if (_configPath === configPath) return
-
-    return JSON.parse(fs.readFileSync(_configPath, { encoding }))
-  })
+  .option('project', 'Project name', config.project)
+  .option('template', `Template to generate project: ${templates.join(', ')}`, 'github')
+  .option('license', `License to generate project: ${licenses.join(', ')}`, config.license, license => license.toUpperCase())
+  .option('encoding', 'Encoding to generate project', config.encoding)
+  .option('root', 'Root dir to generate project')
+  .option('config', 'Config to generate project', `${configPath}`, configPath => resolve(process.cwd(), configPath))
 
 let flags = args.parse(process.argv)
 let userConfig = flags.config
 
-if (userConfig) {
+if (userConfig && userConfig !== configPath) {
+  userConfig = JSON.parse(fs.readFileSync(userConfig, { encoding }))
   Object.keys(userConfig).forEach((key) => {
     userConfig[key.charAt(0)] = userConfig[key]
   })
@@ -36,6 +35,32 @@ if (userConfig) {
 }
 
 if (check(flags)) process.exit(1)
+
+process.env.PWD = flags.root
+process.cwd = () => flags.root
+flags.year = new Date().getFullYear()
+flags.render = render
+flags.plugins = config.plugins.map((plugin) => {
+  return {
+    name: plugin,
+    do: require(resolve(pluginsPath, plugin))
+  }
+})
+
+/*
+  {
+    user: 'nobody',
+    project: 'noproject',
+    template: 'github',
+    license: 'MIT',
+    encoding: 'utf8',
+    config: '/path/to/config',
+    root: '/path/to/root',
+    year: 2017,
+    render: Function
+    plugins: [],
+  }
+ */
 
 require('../lib/generate.js')(flags)
 
@@ -49,6 +74,18 @@ function check (flags) {
     console.error(`Unsupport template: ${flags.template}\n`)
     console.info(`You can choose these:\n  ${templates.join(', ')}`)
     return true
+  }
+
+  flags.r = flags.root = resolve(process.cwd(), flags.root || '')
+
+  try {
+    fs.accessSync(flags.root, fs.constants.W_OK)
+  } catch (err) {
+    if (err.toString().indexOf('no such file or directory') < 0) {
+      throw err
+    } else {
+      fs.mkdirSync(flags.root)
+    }
   }
 
   return false

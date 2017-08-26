@@ -1,6 +1,13 @@
 {
   "user": "nobody",
-  "repository": "norepository",
+  "project": "noproject",
   "template": "github",
-  "license": "MIT"
+  "license": "MIT",
+  "plugins": [
+    "license",
+    "npm",
+    "git"
+  ],
+  "encoding": "utf8",
+  "engine": "art-template"
 }

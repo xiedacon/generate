@@ -1,8 +1,8 @@
-# {{repository}}
+# {{project}}
 
-[![Build Status](https://travis-ci.org/{{user}}/{{repository}}.svg?branch=master)](https://travis-ci.org/{{user}}/{{repository}})
+[![Build Status](https://travis-ci.org/{{user}}/{{project}}.svg?branch=master)](https://travis-ci.org/{{user}}/{{project}})
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
-[![{{license}}](https://img.shields.io/badge/license-{{license}}-blue.svg)](https://github.com/{{user}}/{{repository}}/blob/master/LICENSE)
+[![{{license}}](https://img.shields.io/badge/license-{{license}}-blue.svg)](https://github.com/{{user}}/{{project}}/blob/master/LICENSE)
 
 ## Requirements
 
@@ -12,6 +12,6 @@
 
 ## License
 
-[{{license}} License](https://github.com/{{user}}/{{repository}}/blob/master/LICENSE)
+[{{license}} License](https://github.com/{{user}}/{{project}}/blob/master/LICENSE)
 
 Copyright (c) {{year}} {{user}}
