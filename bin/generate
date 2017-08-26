@@ -2,4 +2,54 @@
 
 'use strict'
 
-require('../lib/generate.js')()
+const args = require('args')
+const { resolve } = require('path')
+const fs = require('fs')
+
+const encoding = 'utf8'
+const configPath = resolve(__dirname, '../config.json')
+const config = JSON.parse(fs.readFileSync(configPath, { encoding }))
+const licenses = fs.readdirSync(resolve(__dirname, '../license'))
+const templatePath = resolve(__dirname, '../templates')
+const templates = fs.readdirSync(templatePath)
+
+args
+  .option('user', 'User name', config.user)
+  .option('repository', 'Repository name', config.repository)
+  .option('template', `Template to generate repository: ${templates.join(', ')}`, 'github')
+  .option('license', `License to repository: ${licenses.join(', ')}`, config.license, license => license.toUpperCase())
+  .option('year', 'Year to license. In most case, need\'t set', new Date().getFullYear())
+  .option('config', 'Config to generate repository', `${configPath}`, (_configPath) => {
+    if (_configPath === configPath) return
+
+    return JSON.parse(fs.readFileSync(_configPath, { encoding }))
+  })
+
+let flags = args.parse(process.argv)
+let userConfig = flags.config
+
+if (userConfig) {
+  Object.keys(userConfig).forEach((key) => {
+    userConfig[key.charAt(0)] = userConfig[key]
+  })
+  flags = Object.assign(flags, userConfig)
+}
+
+if (check(flags)) process.exit(1)
+
+require('../lib/generate.js')(flags)
+
+function check (flags) {
+  if (licenses.indexOf(flags.license) < 0) {
+    console.error(`Unsupport license: ${flags.license}\n`)
+    console.info(`You can choose these:\n  ${licenses.join(', ')}`)
+    return true
+  }
+  if (templates.indexOf(flags.template) < 0) {
+    console.error(`Unsupport template: ${flags.template}\n`)
+    console.info(`You can choose these:\n  ${templates.join(', ')}`)
+    return true
+  }
+
+  return false
+}
