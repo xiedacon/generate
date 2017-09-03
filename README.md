@@ -10,6 +10,7 @@ A tool to generate your repositories with template.
 
 ```
 sudo ln -s /path-to/generate/bin/generate /usr/local/bin/generate
+command -v generate
 
 mkdir test
 cd test
