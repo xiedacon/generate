@@ -57,8 +57,6 @@ typings/
 # dotenv environment variables file
 .env
 
-# vsc
-.vscode/*
-
-*.gzip
-*.rdb
+# product tools
+.vscode
+.idea
