@@ -14,7 +14,7 @@ command -v generate
 
 mkdir test
 cd test
-generate -u yourname -r repositoryname
+generate -u yourname -p project
 ```
 
 ## API

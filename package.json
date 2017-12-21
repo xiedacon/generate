@@ -1,7 +1,7 @@
 {
   "name": "generate",
   "version": "0.0.1",
-  "description": "generate your repositories",
+  "description": "generate your projects",
   "main": "lib/generate.js",
   "scripts": {
     "test": "npm run test-style && echo 'test finish'",
