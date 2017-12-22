@@ -9,7 +9,7 @@ module.exports = (opts) => {
     git init
     git add .
     git commit -m 'init by https://github.com/xiedacon/generate'
-    git remote add origin https://github.com/${opts.user}/${opts.repository}.git
+    git remote add origin https://github.com/${opts.user}/${opts.project}.git
   `, { encoding, cwd: process.cwd(), stdio: [] })
 
   console.log(result)
