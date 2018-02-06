@@ -8,10 +8,13 @@ A tool to generate your repositories with template.
 
 ## Usage
 
-```
+```shell
 sudo ln -s /path-to/generate/bin/generate /usr/local/bin/generate
-command -v generate
 
+if ~/.local/bin in PATH, you can follow this
+ln -s /path-to/generate/bin/generate ~/.local/bin/generate
+
+command -v generate
 mkdir test
 cd test
 generate -u yourname -p project
