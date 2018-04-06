@@ -8,7 +8,7 @@ module.exports = (opts) => {
   let result = execSync(`
     typings install dt~node --global
     echo '{}' > jsconfig.json
-  `, { encoding, cwd: process.cwd(), stdio: [] })
+  `, { encoding, cwd: process.cwd(), stdio: [process.stdin, process.stdout, process.stderr] })
 
   console.log(result)
 }
