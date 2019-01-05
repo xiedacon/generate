@@ -61,3 +61,5 @@ jsconfig.json
 # product tools
 .vscode
 .idea
+
+package-lock.json
