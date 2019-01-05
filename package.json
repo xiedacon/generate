@@ -24,8 +24,8 @@
   },
   "homepage": "https://github.com/xiedacon/generate#README.md",
   "dependencies": {
-    "args": "^3.0.4",
-    "art-template": "^4.12.1"
+    "art-template": "^4.12.1",
+    "inquirer": "^6.2.1"
   },
   "devDependencies": {
     "snazzy": "^7.0.0",

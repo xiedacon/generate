@@ -2,91 +2,103 @@
 
 'use strict'
 
-const args = require('args')
-const { resolve } = require('path')
 const fs = require('fs')
+const os = require('os')
+const { resolve, parse } = require('path')
+const inquirer = require('inquirer')
 
-const configPath = resolve(__dirname, '../config.json')
-const config = require(configPath)
-const { encoding } = config
-const licenses = fs.readdirSync(resolve(__dirname, '../license'))
-const templates = fs.readdirSync(resolve(__dirname, '../templates'))
-const pluginsPath = resolve(__dirname, '../plugins')
-const { render } = require(config.engine)
+const config = require('../config')
+const userInfo = os.userInfo()
 
-args
-  .option('user', 'User name', config.user)
-  .option('project', 'Project name', config.project)
-  .option('template', `Template to generate project: ${templates.join(', ')}`, 'github')
-  .option('license', `License to generate project: ${licenses.join(', ')}`, config.license, license => license.toUpperCase())
-  .option('encoding', 'Encoding to generate project', config.encoding)
-  .option('root', 'Root dir to generate project')
-  .option('config', 'Config to generate project', `${configPath}`, configPath => resolve(process.cwd(), configPath))
+const templatePath = resolve(`${__dirname}/../templates`)
+const templates = fs.readdirSync(templatePath)
+const pluginPath = resolve(`${__dirname}/../plugins`)
+const plugins = fs.readdirSync(pluginPath).map(file => parse(file).name)
+const licensePath = resolve(`${__dirname}/../license`)
+const licenses = fs.readdirSync(licensePath)
 
-let flags = args.parse(process.argv)
-let userConfig = flags.config
+if (templates.length === 0) throw new Error(`No template find in ${templatePath}`)
+if (plugins.length === 0) throw new Error(`No plugin find in ${pluginPath}`)
+if (licenses.length === 0) throw new Error(`No license find in ${licensePath}`)
 
-if (userConfig && userConfig !== configPath) {
-  userConfig = JSON.parse(fs.readFileSync(userConfig, { encoding }))
-  Object.keys(userConfig).forEach((key) => {
-    userConfig[key.charAt(0)] = userConfig[key]
-  })
-  flags = Object.assign(flags, userConfig)
-}
-
-if (check(flags)) process.exit(1)
-
-process.env.PWD = flags.root
-process.cwd = () => flags.root
-flags.year = new Date().getFullYear()
-flags.render = render
-flags.plugins = config.plugins.map((plugin) => {
-  return {
-    name: plugin,
-    do: require(resolve(pluginsPath, plugin))
-  }
-})
-
-/*
+inquirer.prompt([
   {
-    user: 'nobody',
-    project: 'noproject',
-    template: 'github',
-    license: 'MIT',
-    encoding: 'utf8',
-    config: '/path/to/config',
-    root: '/path/to/root',
-    year: 2017,
-    render: Function
-    plugins: [],
-  }
- */
+    type: 'input',
+    name: 'root',
+    message: 'Project root:',
+    default: process.argv[2] || '.',
+    validate (root) {
+      try {
+        fs.mkdirSync(root, { recursive: true })
+        return true
+      } catch (err) {
+        if (err.toString().indexOf('file already exists') < 0) {
+          throw err
+        } else {
+          const stats = fs.statSync(root)
 
-require('../lib/generate.js')(flags)
-
-function check (flags) {
-  if (licenses.indexOf(flags.license) < 0) {
-    console.error(`Unsupport license: ${flags.license}\n`)
-    console.info(`You can choose these:\n  ${licenses.join(', ')}`)
-    return true
-  }
-  if (templates.indexOf(flags.template) < 0) {
-    console.error(`Unsupport template: ${flags.template}\n`)
-    console.info(`You can choose these:\n  ${templates.join(', ')}`)
-    return true
-  }
-
-  flags.r = flags.root = resolve(process.cwd(), flags.root || '')
-
-  try {
-    fs.accessSync(flags.root, fs.constants.W_OK)
-  } catch (err) {
-    if (err.toString().indexOf('no such file or directory') < 0) {
-      throw err
-    } else {
-      fs.mkdirSync(flags.root)
+          if (!(stats.mode & fs.constants.S_IFDIR)) return `'${root}' should be a dir`
+          else if (
+            (userInfo.uid === stats.uid && (stats.mode & fs.constants.S_IWUSR)) ||
+            (userInfo.gid === stats.gid && (stats.mode & fs.constants.S_IWGRP)) ||
+            (stats.mode & fs.constants.S_IWOTH)
+          ) return true
+          else return `'${root}' should be writable`
+        }
+      }
+    }
+  },
+  {
+    type: 'input',
+    name: 'user',
+    message: 'User name:',
+    default: config.user || userInfo.username
+  },
+  {
+    type: 'input',
+    name: 'project',
+    message: 'Project name:',
+    default (result) {
+      return result.root.split('/').pop()
+    },
+    validate (val) {
+      return Boolean(val) || 'Project name is required.'
+    }
+  },
+  {
+    type: 'list',
+    name: 'template',
+    message: 'Template to generate project:',
+    choices: templates,
+    default: config.template || templates[0]
+  },
+  {
+    type: 'checkbox',
+    name: 'plugins',
+    message: 'Template to generate project:',
+    choices: plugins,
+    default: config.plugins
+  },
+  {
+    type: 'list',
+    name: 'license',
+    message: 'License to generate project:',
+    choices: licenses,
+    default: config.license || licenses[0],
+    when (result) {
+      return result.plugins.indexOf('license') >= 0
     }
   }
+]).then((result) => {
+  process.env.PWD = result.root
+  process.cwd = () => result.root
+  result.render = require(config.engine).render
+  result.plugins = result.plugins.map((plugin) => ({
+    name: plugin,
+    do: require(resolve(pluginPath, plugin))
+  }))
 
-  return false
-}
+  require('../lib/generate.js')(result)
+}).catch((err) => {
+  console.log(err)
+})
