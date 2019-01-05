@@ -58,6 +58,6 @@ jsconfig.json
 # dotenv environment variables file
 .env
 
-# product tools
+# Product tools
 .vscode
 .idea
