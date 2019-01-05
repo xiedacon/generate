@@ -6,7 +6,10 @@ const { join } = require('path')
 const encoding = 'utf8'
 const licenseDir = join(__dirname, '../license')
 
-module.exports = (opts) => {
-  let content = opts.render(fs.readFileSync(join(licenseDir, opts.license), { encoding }), opts)
+module.exports = (config) => {
+  global.config = config
+  let content = config.render(fs.readFileSync(join(licenseDir, config.license), { encoding }), global)
+  delete global.config
+
   fs.writeFileSync(join(process.cwd(), 'LICENSE'), content, { encoding })
 }
