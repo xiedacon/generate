@@ -5,7 +5,6 @@
   "license": "MIT",
   "plugins": [
     "license",
-    "npm",
     "git"
   ],
   "encoding": "utf8",
