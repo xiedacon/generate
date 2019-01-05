@@ -51,7 +51,7 @@ inquirer.prompt([
   {
     type: 'input',
     name: 'user',
-    message: 'User name:',
+    message: 'Project owner:',
     default: config.user || userInfo.username
   },
   {
@@ -68,21 +68,21 @@ inquirer.prompt([
   {
     type: 'list',
     name: 'template',
-    message: 'Template to generate project:',
+    message: 'Project template:',
     choices: templates,
     default: config.template || templates[0]
   },
   {
     type: 'checkbox',
     name: 'plugins',
-    message: 'Template to generate project:',
+    message: 'Project Plugins:',
     choices: plugins,
     default: config.plugins
   },
   {
     type: 'list',
     name: 'license',
-    message: 'License to generate project:',
+    message: 'Project license:',
     choices: licenses,
     default: config.license || licenses[0],
     when (result) {
