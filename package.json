@@ -5,7 +5,9 @@
   "main": "lib/generate.js",
   "scripts": {
     "test": "npm run test-style && echo 'test finish'",
-    "test-style": "eslint --fix ."
+    "test-style": "eslint --fix .",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "repository": {
     "type": "git",
@@ -25,7 +27,8 @@
   "homepage": "https://github.com/xiedacon/generate#README.md",
   "dependencies": {
     "art-template": "^4.12.1",
-    "inquirer": "^6.2.1"
+    "inquirer": "^6.2.1",
+    "snyk": "^1.316.2"
   },
   "devDependencies": {
     "eslint": "^5.12.0",
@@ -34,5 +37,6 @@
     "eslint-plugin-node": "^8.0.1",
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-standard": "^4.0.0"
-  }
+  },
+  "snyk": true
 }
