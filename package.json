@@ -27,7 +27,7 @@
   "homepage": "https://github.com/xiedacon/generate#README.md",
   "dependencies": {
     "art-template": "^4.12.1",
-    "inquirer": "^7.0.5",
+    "inquirer": "^8.2.7",
     "snyk": "^1.316.2"
   },
   "devDependencies": {
